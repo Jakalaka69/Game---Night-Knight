@@ -1,0 +1,74 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class Player : MonoBehaviour
+{
+    private PlayerActions actions;
+    [SerializeField]
+    private Animator animator;
+    [SerializeField]
+    private CharacterController characterController;
+    [SerializeField]
+    #region INPUT
+    private Vector2 moveInput;
+    private float horizontalMouseInput;
+    #endregion
+    [SerializeField]
+    #region VALUE
+    private float moveSpeed = 2.0F;
+    private float rotationSpeed = 80.0F;
+    #endregion
+    
+    private void Rotate()
+    {
+        if(!Mouse.current.rightButton.isPressed)
+        {
+            float mouseX = horizontalMouseInput * rotationSpeed * Time.deltaTime;
+            transform.Rotate(Vector3.up * mouseX);
+        }
+    }
+
+    private void Move()
+    {
+        Vector3 movement = transform.right * moveInput.x + transform.forward * moveInput.y;
+        characterController.Move(moveSpeed * Time.deltaTime * movement);
+    }
+
+    void Update()
+    {
+        Move();
+        Rotate();
+    }
+    private void Stand()
+    {
+        animator.SetBool("Stand", true);
+        animator.SetBool("Fight", false);
+    }
+    private void Fight()
+    {
+        animator.SetBool("Stand", false);
+        animator.SetBool("Fight", true);
+    }
+
+    private void OnEnable()
+    {
+        actions.Enable();
+    }
+    private void OnDisable()
+    {
+        actions.Disable();
+    }
+    void Awake()
+    {
+        actions = new PlayerActions();
+
+        actions.Controls.Stand.performed += cxt => Stand();
+        actions.Controls.Fight.performed += cxt => Fight();
+        actions.Controls.Move.performed += cxt => moveInput = cxt.ReadValue<Vector2>();
+        actions.Controls.MouseMovement.performed += cxt => horizontalMouseInput = cxt.ReadValue<float>();
+    }
+
+}

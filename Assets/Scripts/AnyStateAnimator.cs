@@ -18,7 +18,7 @@ public class AnyStateAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Animate();
+       Animate();
     }
 
     public void TryPlayAnimation(string animationName)
@@ -51,6 +51,25 @@ public class AnyStateAnimator : MonoBehaviour
             }
             anyStateAnimations[animationName].IsPlaying = true;
         }
+        
     }
-    
+    public void AddAnimation(params AnyStateAnimation[] animations)
+    {
+        for(int i = 0; i < animations.Length; i++)
+        {
+            this.anyStateAnimations.Add(animations[i].AnimationName, animations[i]);
+        }
+    }
+
+    public void Animate()
+    {
+        foreach (string key in anyStateAnimations.Keys)
+        {
+            animator.SetBool(key, anyStateAnimations[key].IsPlaying);
+        }
+    }
+    public void OnAnimationDone(string animationName)
+    {
+        anyStateAnimations[animationName].IsPlaying = false;
+    }
 }
