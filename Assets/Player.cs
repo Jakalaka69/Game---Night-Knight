@@ -26,7 +26,7 @@ public class Player : MonoBehaviour
     private float gravityValue = -9.81F;
     [SerializeField]
     private float jumpHeight = 0.2F;
-    /*private void Gravity()
+    private void Gravity()
     {
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
         {
             playerVelocity.y = 0;
         }
-    }*/
+    }
     private void Rotate()
     {
         if(!Mouse.current.rightButton.isPressed)
@@ -46,6 +46,16 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        if(moveInput.y > 0)
+        {
+            animator.SetBool("IsRunning", true);
+            animator.SetBool("Stand", false);
+        }
+        else
+        {
+            animator.SetBool("IsRunning", false);
+            animator.SetBool("Stand", true);
+        }
         Vector3 movement = transform.right * moveInput.x + transform.forward * moveInput.y;
         characterController.Move(moveSpeed * Time.deltaTime * movement);
 
@@ -53,7 +63,7 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        //Gravity();
+        Gravity();
         Move();
         Rotate();
     }
