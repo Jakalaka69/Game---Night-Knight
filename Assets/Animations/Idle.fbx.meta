@@ -20,13 +20,22 @@ ModelImporter:
     rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: "\nClip 'mixamo.com' has import animation warnings that
-      might lower retargeting quality:\n\t'Spine2' is inbetween humanoid transforms
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar
+      to improve retargeting quality.\n\t'Spine3' is inbetween humanoid transforms
       and has rotation animation that will be discarded.\n"
-    animationRetargetingWarnings: 
-    animationDoRetargetingWarnings: 0
+    animationRetargetingWarnings: "\nRetargeting quality report for clip 'mixamo.com':\n\tLeftUpperArm
+      average position error 2.0 mm and maximum position error 4.4 mm at time 8:25
+      (88.3%) Frame 265\n\tLeftLowerArm average position error 0.9 mm and maximum
+      position error 1.8 mm at time 0:26 (8.7%) Frame 26\n\tLeftHand average position
+      error 0.9 mm and maximum position error 2.1 mm at time 0:25 (8.3%) Frame 25\n\tRightUpperArm
+      average position error 2.0 mm and maximum position error 4.4 mm at time 2:26
+      (28.7%) Frame 86\n\tRightLowerArm average position error 0.8 mm and maximum
+      position error 1.7 mm at time 0:25 (8.3%) Frame 25\n\tHead average position
+      error 4.1 mm and maximum position error 8.9 mm at time 2:26 (28.7%) Frame 86\n"
+    animationDoRetargetingWarnings: 1
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 3
+    animationCompression: 0
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -42,7 +51,7 @@ ModelImporter:
       lastFrame: 300
       wrapMode: 0
       orientationOffsetY: 0
-      level: -2.6
+      level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
@@ -51,7 +60,7 @@ ModelImporter:
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 1
       heightFromFeet: 0
@@ -83,7 +92,7 @@ ModelImporter:
           preInfinity: 3
           postInfinity: 3
           rotationOrder: 4
-      - name: Curve
+      - name: IK_rightFoot
         curve:
           serializedVersion: 2
           curve:
@@ -331,7 +340,7 @@ ModelImporter:
         value: {x: 0, y: 0, z: 0}
         length: 0
         modified: 0
-    - boneName: Spine3
+    - boneName: Spine2
       humanName: UpperChest
       limit:
         min: {x: 0, y: 0, z: 0}
@@ -342,16 +351,11 @@ ModelImporter:
     skeleton:
     - name: Idle(Clone)
       parentName: 
-      position: {x: 0, y: 0, z: 0}
-      rotation: {x: 0, y: 0, z: 0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: Main Bear
-      parentName: Idle(Clone)
       position: {x: -7.521921, y: 0.9269887, z: 1.928841}
       rotation: {x: -0.038462155, y: 0.36770713, z: 0.008176689, w: 0.92911}
       scale: {x: 1, y: 1, z: 1}
     - name: Hips
-      parentName: Main Bear
+      parentName: Idle(Clone)
       position: {x: 6.8680315, y: 1.192203, z: 3.8259997}
       rotation: {x: 0.0024479292, y: -0.26529735, z: 0.00035397662, w: 0.96416354}
       scale: {x: 1, y: 1, z: 1}
@@ -474,8 +478,8 @@ ModelImporter:
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
-    hasTranslationDoF: 1
-    hasExtraRoot: 1
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1

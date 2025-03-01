@@ -5,7 +5,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
-{
+{   
+    
     private PlayerActions actions;
     [SerializeField]
     private Animator animator;
@@ -21,7 +22,19 @@ public class Player : MonoBehaviour
     private float moveSpeed = 2.0F;
     private float rotationSpeed = 80.0F;
     #endregion
-    
+    private Vector3 playerVelocity;
+    private float gravityValue = -9.81F;
+    [SerializeField]
+    private float jumpHeight = 0.2F;
+    /*private void Gravity()
+    {
+        playerVelocity.y += gravityValue * Time.deltaTime;
+        characterController.Move(playerVelocity * Time.deltaTime);
+        if (characterController.isGrounded && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0;
+        }
+    }*/
     private void Rotate()
     {
         if(!Mouse.current.rightButton.isPressed)
@@ -35,10 +48,12 @@ public class Player : MonoBehaviour
     {
         Vector3 movement = transform.right * moveInput.x + transform.forward * moveInput.y;
         characterController.Move(moveSpeed * Time.deltaTime * movement);
+
     }
 
     void Update()
     {
+        //Gravity();
         Move();
         Rotate();
     }
