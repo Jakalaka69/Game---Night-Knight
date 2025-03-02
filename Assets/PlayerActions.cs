@@ -97,7 +97,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""9efb683c-3fa4-4322-9ada-24e13b8806b7"",
-                    ""path"": ""<Keyboard>/2"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

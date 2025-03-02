@@ -46,6 +46,13 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        if(animator.GetBool("Fight") == true)
+        {
+            moveInput.x = 0;
+            moveInput.y = 0;
+            Fight();
+            animator.SetBool("Fight", false);
+        }
         if(moveInput.y > 0)
         {
             animator.SetBool("IsRunning", true);
