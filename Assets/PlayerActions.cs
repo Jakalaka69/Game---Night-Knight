@@ -37,6 +37,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Fight"",
+                    ""type"": ""Button"",
+                    ""id"": ""b1fc1a21-f40c-4c17-9a39-3e211b9cabf4"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Move"",
                     ""type"": ""PassThrough"",
                     ""id"": ""39c83d11-81d5-49c5-8a73-f357f26afca7"",
@@ -71,15 +80,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Fight"",
-                    ""type"": ""Button"",
-                    ""id"": ""254f17c1-e50b-4aaf-9c1e-32c16049b148"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -91,6 +91,17 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Stand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9efb683c-3fa4-4322-9ada-24e13b8806b7"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -181,17 +192,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7940d768-f99c-4b5d-86b7-29978135dee9"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Fight"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -201,11 +201,11 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         // Controls
         m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
         m_Controls_Stand = m_Controls.FindAction("Stand", throwIfNotFound: true);
+        m_Controls_Fight = m_Controls.FindAction("Fight", throwIfNotFound: true);
         m_Controls_Move = m_Controls.FindAction("Move", throwIfNotFound: true);
         m_Controls_MouseMovement = m_Controls.FindAction("MouseMovement", throwIfNotFound: true);
         m_Controls_Run = m_Controls.FindAction("Run", throwIfNotFound: true);
         m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
-        m_Controls_Fight = m_Controls.FindAction("Fight", throwIfNotFound: true);
     }
 
     ~@PlayerActions()
@@ -273,21 +273,21 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Controls;
     private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
     private readonly InputAction m_Controls_Stand;
+    private readonly InputAction m_Controls_Fight;
     private readonly InputAction m_Controls_Move;
     private readonly InputAction m_Controls_MouseMovement;
     private readonly InputAction m_Controls_Run;
     private readonly InputAction m_Controls_Jump;
-    private readonly InputAction m_Controls_Fight;
     public struct ControlsActions
     {
         private @PlayerActions m_Wrapper;
         public ControlsActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Stand => m_Wrapper.m_Controls_Stand;
+        public InputAction @Fight => m_Wrapper.m_Controls_Fight;
         public InputAction @Move => m_Wrapper.m_Controls_Move;
         public InputAction @MouseMovement => m_Wrapper.m_Controls_MouseMovement;
         public InputAction @Run => m_Wrapper.m_Controls_Run;
         public InputAction @Jump => m_Wrapper.m_Controls_Jump;
-        public InputAction @Fight => m_Wrapper.m_Controls_Fight;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -300,6 +300,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Stand.started += instance.OnStand;
             @Stand.performed += instance.OnStand;
             @Stand.canceled += instance.OnStand;
+            @Fight.started += instance.OnFight;
+            @Fight.performed += instance.OnFight;
+            @Fight.canceled += instance.OnFight;
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -312,9 +315,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
-            @Fight.started += instance.OnFight;
-            @Fight.performed += instance.OnFight;
-            @Fight.canceled += instance.OnFight;
         }
 
         private void UnregisterCallbacks(IControlsActions instance)
@@ -322,6 +322,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Stand.started -= instance.OnStand;
             @Stand.performed -= instance.OnStand;
             @Stand.canceled -= instance.OnStand;
+            @Fight.started -= instance.OnFight;
+            @Fight.performed -= instance.OnFight;
+            @Fight.canceled -= instance.OnFight;
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
@@ -334,9 +337,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
-            @Fight.started -= instance.OnFight;
-            @Fight.performed -= instance.OnFight;
-            @Fight.canceled -= instance.OnFight;
         }
 
         public void RemoveCallbacks(IControlsActions instance)
@@ -357,10 +357,10 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     public interface IControlsActions
     {
         void OnStand(InputAction.CallbackContext context);
+        void OnFight(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnMouseMovement(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnFight(InputAction.CallbackContext context);
     }
 }
