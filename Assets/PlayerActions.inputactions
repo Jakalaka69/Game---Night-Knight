@@ -15,15 +15,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fight",
-                    "type": "Button",
-                    "id": "b1fc1a21-f40c-4c17-9a39-3e211b9cabf4",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Move",
                     "type": "PassThrough",
                     "id": "39c83d11-81d5-49c5-8a73-f357f26afca7",
@@ -58,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Fight",
+                    "type": "Button",
+                    "id": "254f17c1-e50b-4aaf-9c1e-32c16049b148",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -69,17 +69,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Stand",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "9efb683c-3fa4-4322-9ada-24e13b8806b7",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Fight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -168,6 +157,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7940d768-f99c-4b5d-86b7-29978135dee9",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

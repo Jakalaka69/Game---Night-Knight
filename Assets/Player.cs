@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
+        
         if(animator.GetBool("Fight") == true)
         {
             moveInput.x = 0;
@@ -56,13 +57,15 @@ public class Player : MonoBehaviour
                 animator.SetBool("Fight", false);
             }
         }
-        if(moveInput.y > 0)
+        else if(moveInput.y > 0)
         {
             animator.SetBool("IsRunning", true);
             animator.SetBool("Stand", false);
         }
+        
         else
         {
+
             animator.SetBool("IsRunning", false);
             animator.SetBool("Stand", true);
         }
@@ -84,8 +87,11 @@ public class Player : MonoBehaviour
     }
     private void Fight()
     {
+
         animator.SetBool("Stand", false);
         animator.SetBool("Fight", true);
+        
+       
     }
 
     private void OnEnable()
