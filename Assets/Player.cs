@@ -51,7 +51,10 @@ public class Player : MonoBehaviour
             moveInput.x = 0;
             moveInput.y = 0;
             Fight();
-            animator.SetBool("Fight", false);
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Fight"))
+            {
+                animator.SetBool("Fight", false);
+            }
         }
         if(moveInput.y > 0)
         {
