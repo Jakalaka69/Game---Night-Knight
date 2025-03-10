@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     private CharacterController characterController;
     [SerializeField]
     #region INPUT
-    private Vector2 moveInput;
+    private Vector3 moveInput;
     private float horizontalMouseInput;
     #endregion
     [SerializeField]
@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     private float moveSpeed = 2.0F;
     private float rotationSpeed = 80.0F;
     #endregion
-    private Vector3 playerVelocity;
+    private Vector2 playerVelocity;
     private float gravityValue = -9.81F;
     [SerializeField]
     private float jumpHeight = 0.2F;
@@ -50,10 +50,17 @@ public class Player : MonoBehaviour
         {
             moveInput.x = 0;
             moveInput.y = 0;
-            Fight();
+            
             if (animator.GetCurrentAnimatorStateInfo(0).IsName("Fight"))
             {
                 animator.SetBool("Fight", false);
+            }
+        }
+        if(animator.GetBool("Jump") == true)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+            {
+                animator.SetBool("Jump", false);
             }
         }
         if(moveInput.y > 0)
@@ -87,6 +94,12 @@ public class Player : MonoBehaviour
         animator.SetBool("Stand", false);
         animator.SetBool("Fight", true);
     }
+    private void Jump()
+    {
+
+        animator.SetBool("Jump", true);
+        playerVelocity.y += Mathf.Sqrt(jumpHeight * -75f * gravityValue);
+    }
 
     private void OnEnable()
     {
@@ -102,6 +115,7 @@ public class Player : MonoBehaviour
 
         actions.Controls.Stand.performed += cxt => Stand();
         actions.Controls.Fight.performed += cxt => Fight();
+        actions.Controls.Jump.performed += cxt => Jump();
         actions.Controls.Move.performed += cxt => moveInput = cxt.ReadValue<Vector2>();
         actions.Controls.MouseMovement.performed += cxt => horizontalMouseInput = cxt.ReadValue<float>();
     }

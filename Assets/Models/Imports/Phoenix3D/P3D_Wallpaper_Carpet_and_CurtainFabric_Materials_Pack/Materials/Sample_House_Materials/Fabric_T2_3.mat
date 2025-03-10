@@ -9,7 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Fabric_T2_3
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_Parent: {fileID: 2100000, guid: 30f66dfd1a2900440a4108333089f568, type: 2}
+  m_Parent: {fileID: 2100000, guid: 474b2ad0567874f48b47f68034db7ded, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _NORMALMAP
