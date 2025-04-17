@@ -28,15 +28,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             ""id"": ""7861ba80-0ada-4ac4-a225-546498da19c3"",
             ""actions"": [
                 {
-                    ""name"": ""Stand"",
-                    ""type"": ""Button"",
-                    ""id"": ""021a1028-63bf-45b7-95d9-bcfbdffaf5c3"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Fight"",
                     ""type"": ""Button"",
                     ""id"": ""b1fc1a21-f40c-4c17-9a39-3e211b9cabf4"",
@@ -64,36 +55,25 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Run"",
-                    ""type"": ""Button"",
-                    ""id"": ""675cb9f7-ea48-4e58-a2fa-74959b15c284"",
-                    ""expectedControlType"": """",
+                    ""name"": ""Jump"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d8c6b965-def5-4d1b-8b60-5d4b2de84070"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Jump"",
-                    ""type"": ""Button"",
-                    ""id"": ""d8c6b965-def5-4d1b-8b60-5d4b2de84070"",
-                    ""expectedControlType"": """",
+                    ""name"": ""Run"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""ee34c1bb-de30-4e4e-89e8-5a5b139b3f9f"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""055072ad-2329-4b75-a2dd-ccf745dd38ec"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Stand"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""9efb683c-3fa4-4322-9ada-24e13b8806b7"",
@@ -173,23 +153,23 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4bc7f333-bdcc-4e6a-a077-0b773a075c12"",
-                    ""path"": """",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Run"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""f2f6b8bd-e413-4828-8fa5-db30b06a0a0f"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e6ba8f19-0438-421b-a46c-46f1da88eb29"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -200,12 +180,11 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
 }");
         // Controls
         m_Controls = asset.FindActionMap("Controls", throwIfNotFound: true);
-        m_Controls_Stand = m_Controls.FindAction("Stand", throwIfNotFound: true);
         m_Controls_Fight = m_Controls.FindAction("Fight", throwIfNotFound: true);
         m_Controls_Move = m_Controls.FindAction("Move", throwIfNotFound: true);
         m_Controls_MouseMovement = m_Controls.FindAction("MouseMovement", throwIfNotFound: true);
-        m_Controls_Run = m_Controls.FindAction("Run", throwIfNotFound: true);
         m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
+        m_Controls_Run = m_Controls.FindAction("Run", throwIfNotFound: true);
     }
 
     ~@PlayerActions()
@@ -272,22 +251,20 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     // Controls
     private readonly InputActionMap m_Controls;
     private List<IControlsActions> m_ControlsActionsCallbackInterfaces = new List<IControlsActions>();
-    private readonly InputAction m_Controls_Stand;
     private readonly InputAction m_Controls_Fight;
     private readonly InputAction m_Controls_Move;
     private readonly InputAction m_Controls_MouseMovement;
-    private readonly InputAction m_Controls_Run;
     private readonly InputAction m_Controls_Jump;
+    private readonly InputAction m_Controls_Run;
     public struct ControlsActions
     {
         private @PlayerActions m_Wrapper;
         public ControlsActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Stand => m_Wrapper.m_Controls_Stand;
         public InputAction @Fight => m_Wrapper.m_Controls_Fight;
         public InputAction @Move => m_Wrapper.m_Controls_Move;
         public InputAction @MouseMovement => m_Wrapper.m_Controls_MouseMovement;
-        public InputAction @Run => m_Wrapper.m_Controls_Run;
         public InputAction @Jump => m_Wrapper.m_Controls_Jump;
+        public InputAction @Run => m_Wrapper.m_Controls_Run;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -297,9 +274,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_ControlsActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_ControlsActionsCallbackInterfaces.Add(instance);
-            @Stand.started += instance.OnStand;
-            @Stand.performed += instance.OnStand;
-            @Stand.canceled += instance.OnStand;
             @Fight.started += instance.OnFight;
             @Fight.performed += instance.OnFight;
             @Fight.canceled += instance.OnFight;
@@ -309,19 +283,16 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @MouseMovement.started += instance.OnMouseMovement;
             @MouseMovement.performed += instance.OnMouseMovement;
             @MouseMovement.canceled += instance.OnMouseMovement;
-            @Run.started += instance.OnRun;
-            @Run.performed += instance.OnRun;
-            @Run.canceled += instance.OnRun;
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Run.started += instance.OnRun;
+            @Run.performed += instance.OnRun;
+            @Run.canceled += instance.OnRun;
         }
 
         private void UnregisterCallbacks(IControlsActions instance)
         {
-            @Stand.started -= instance.OnStand;
-            @Stand.performed -= instance.OnStand;
-            @Stand.canceled -= instance.OnStand;
             @Fight.started -= instance.OnFight;
             @Fight.performed -= instance.OnFight;
             @Fight.canceled -= instance.OnFight;
@@ -331,12 +302,12 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @MouseMovement.started -= instance.OnMouseMovement;
             @MouseMovement.performed -= instance.OnMouseMovement;
             @MouseMovement.canceled -= instance.OnMouseMovement;
-            @Run.started -= instance.OnRun;
-            @Run.performed -= instance.OnRun;
-            @Run.canceled -= instance.OnRun;
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Run.started -= instance.OnRun;
+            @Run.performed -= instance.OnRun;
+            @Run.canceled -= instance.OnRun;
         }
 
         public void RemoveCallbacks(IControlsActions instance)
@@ -356,11 +327,10 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     public ControlsActions @Controls => new ControlsActions(this);
     public interface IControlsActions
     {
-        void OnStand(InputAction.CallbackContext context);
         void OnFight(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnMouseMovement(InputAction.CallbackContext context);
-        void OnRun(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
     }
 }

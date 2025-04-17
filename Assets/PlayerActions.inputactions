@@ -6,15 +6,6 @@
             "id": "7861ba80-0ada-4ac4-a225-546498da19c3",
             "actions": [
                 {
-                    "name": "Stand",
-                    "type": "Button",
-                    "id": "021a1028-63bf-45b7-95d9-bcfbdffaf5c3",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Fight",
                     "type": "Button",
                     "id": "b1fc1a21-f40c-4c17-9a39-3e211b9cabf4",
@@ -42,36 +33,25 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Run",
-                    "type": "Button",
-                    "id": "675cb9f7-ea48-4e58-a2fa-74959b15c284",
-                    "expectedControlType": "",
+                    "name": "Jump",
+                    "type": "PassThrough",
+                    "id": "d8c6b965-def5-4d1b-8b60-5d4b2de84070",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "d8c6b965-def5-4d1b-8b60-5d4b2de84070",
-                    "expectedControlType": "",
+                    "name": "Run",
+                    "type": "PassThrough",
+                    "id": "ee34c1bb-de30-4e4e-89e8-5a5b139b3f9f",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "055072ad-2329-4b75-a2dd-ccf745dd38ec",
-                    "path": "<Keyboard>/1",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Stand",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "9efb683c-3fa4-4322-9ada-24e13b8806b7",
@@ -151,23 +131,23 @@
                 },
                 {
                     "name": "",
-                    "id": "4bc7f333-bdcc-4e6a-a077-0b773a075c12",
-                    "path": "",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Run",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "f2f6b8bd-e413-4828-8fa5-db30b06a0a0f",
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e6ba8f19-0438-421b-a46c-46f1da88eb29",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

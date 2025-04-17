@@ -1030,11 +1030,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b5112eaa4f4a2294ba96172538c66fdf, type: 3}
   m_PrefabInstance: {fileID: 1927552566}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &609727399 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: b5112eaa4f4a2294ba96172538c66fdf, type: 3}
-  m_PrefabInstance: {fileID: 1927552566}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &609727400 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b5112eaa4f4a2294ba96172538c66fdf, type: 3}
@@ -1059,30 +1054,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 2.5
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &609727402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609727398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de449aa8902961b458a065a9ea145701, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 609727399}
-  characterController: {fileID: 609727401}
-  moveInput: {x: 0, y: 0, z: 0}
-  moveSpeed: 6
-  jumpHeight: 0.2
 --- !u!114 &609727403
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,6 +1073,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286f9664fa9903a40aef7a33c34f433a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &609727404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609727398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3f918e8eb0a3164ab7ba8ae7f1d6be9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AnyStateAnimator: {fileID: 609727403}
+  characterController: {fileID: 609727401}
+  moveInput: {x: 0, y: 0, z: 0}
+  moveSpeed: 2
+  jumpHeight: 0.5
+  runSpeed: 2
+  walkSpeed: 1
+  Grounded: 1
 --- !u!4 &628053717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 47b64ebcccb00c6478079c6fabf11a52, type: 3}
@@ -3301,7 +3299,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1512079404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f24c8423fe2f342825fd6dddd2d87e, type: 3}
+  m_Script: {fileID: 11500000, guid: aed32adf9082c394aba379d3c2399b20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lookAtTarget: {fileID: 707037561}
@@ -4592,10 +4590,10 @@ PrefabInstance:
       addedObject: {fileID: 609727403}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b5112eaa4f4a2294ba96172538c66fdf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 609727402}
+      addedObject: {fileID: 609727401}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b5112eaa4f4a2294ba96172538c66fdf, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 609727401}
+      addedObject: {fileID: 609727404}
   m_SourcePrefab: {fileID: 100100000, guid: b5112eaa4f4a2294ba96172538c66fdf, type: 3}
 --- !u!1001 &1949353168
 PrefabInstance:
@@ -4703,7 +4701,11 @@ MonoBehaviour:
   animator: {fileID: 2012247607}
   characterController: {fileID: 2012247608}
   moveInput: {x: 0, y: 0, z: 0}
+  horizontalMouseInput: 0
   moveSpeed: 5
+  rotationSpeed: 80
+  playerVelocity: {x: 0, y: 0}
+  gravityValue: -9.81
   jumpHeight: 0.2
 --- !u!95 &2012247607 stripped
 Animator:
