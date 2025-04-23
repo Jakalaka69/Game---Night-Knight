@@ -5,13 +5,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
-{   
+{
+    private Animator animator;
+    [SerializeField]
+    private AnimationToRagdoll rag;
     
     private PlayerActions actions;
+
     [SerializeField]
-    private AnyStateAnimator AnyStateAnimator;
+    private AnyStateAnimator anyStateAnimator;
     [SerializeField]
-    
     private CharacterController characterController;
     [SerializeField]
     #region INPUT
@@ -39,6 +42,7 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private bool Grounded = true;
+    private bool RS = false;
     private void Gravity()
     {
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -50,11 +54,10 @@ public class Player : MonoBehaviour
     }
     private void Rotate()
     {
-        if(!Mouse.current.rightButton.isPressed)
-        {
-            float mouseX = horizontalMouseInput * rotationSpeed * Time.deltaTime;
-            transform.Rotate(Vector3.up * mouseX);
-        }
+        
+         float mouseX = horizontalMouseInput * rotationSpeed * Time.deltaTime;
+         transform.Rotate(Vector3.up * mouseX);
+        
     }
 
     private void Move()
@@ -62,24 +65,30 @@ public class Player : MonoBehaviour
         Vector3 movement = transform.right * moveInput.x + transform.forward * moveInput.y;
         characterController.Move(moveSpeed * Time.deltaTime * movement);
 
+       
+
 
         if (isRunning)
         {
-            AnyStateAnimator.TryPlayAnimation("Run");
+            anyStateAnimator.TryPlayAnimation("Run");
         }
         else if (moveInput.x != 0 || moveInput.y != 0)
         {
-            AnyStateAnimator.TryPlayAnimation("Walk");
+            anyStateAnimator.TryPlayAnimation("Walk");
         }
         else
         {
-            AnyStateAnimator.TryPlayAnimation("Stand");
+            anyStateAnimator.TryPlayAnimation("Stand");
         }
 
 
     }
 
     
+    private void Fight()
+    {
+        anyStateAnimator.TryPlayAnimation("Fight");
+    }
 
     private void Run()
     {
@@ -98,15 +107,39 @@ public class Player : MonoBehaviour
     {
         if (characterController.isGrounded)
         {
-
-            AnyStateAnimator.TryPlayAnimation("Jump");
+            print("here");
+            anyStateAnimator.TryPlayAnimation("Jump");
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3f * gravityValue);
 
         }
     }
+
+    public void SetDead(bool x)
+    {
+        dead = x;
+    }
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.gameObject.tag == "Enemy") { 
+            Die();
+            
+            collision.gameObject.SetActive(false);
+        }
+        
+    }
     public void Die()
     {
-        AnyStateAnimator.TryPlayAnimation("Die");
+        isRunning = false;
+        horizontalMouseInput = 0;
+        moveInput.y = 0;
+        moveInput.z = 0;
+        moveInput.x = 0;
+        actions.Disable();
+        characterController.enabled = false;
+        
+        
+        rag.dead = true;
         dead = true;
     }
 
@@ -129,29 +162,46 @@ public class Player : MonoBehaviour
         actions.Controls.Run.performed += cxt => Run();
         moveSpeed = walkSpeed;
         actions.Controls.Jump.performed += cxt => Jump();
+        actions.Controls.Fight.performed += cxt => Fight();
     }
 
     void Start()
     {
         AnyStateAnimation stand = new
-        AnyStateAnimation("Stand", "Jump", "Die");
+        AnyStateAnimation("Stand", "Jump");
         AnyStateAnimation walk = new
-        AnyStateAnimation("Walk", "Jump", "Die");
+        AnyStateAnimation("Walk", "Jump");
         AnyStateAnimation run = new
-        AnyStateAnimation("Run", "Jump", "Die");
+        AnyStateAnimation("Run", "Jump");
         AnyStateAnimation jump = new
-        AnyStateAnimation("Jump", "Die");
-        AnyStateAnimation die = new AnyStateAnimation("Die");
-        AnyStateAnimator.AddAnimation(stand, walk, run, jump, die);
+        AnyStateAnimation("Jump");
+        AnyStateAnimation fight = new
+        AnyStateAnimation("Fight");
+
+        anyStateAnimator.AddAnimation(stand, walk, run, jump,fight );
     }
     void Update()
     {
         if (!dead)
         {
+            actions.Enable();
+            characterController.enabled = true;
+            
             Move();
             Rotate();
             Gravity();
         }
+        else
+        {
+
+            Die();
+        }
+
+
         Grounded = playerVelocity.y == 0;
-}
+        if (Grounded)
+        {
+            anyStateAnimator.OnAnimationDone("Jump");
+        }
+    }
 }

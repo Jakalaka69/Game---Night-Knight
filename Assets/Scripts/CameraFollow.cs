@@ -12,7 +12,7 @@ public class CameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
-        transform.LookAt(lookAtTarget);
+        transform.LookAt(lookAtTarget,Vector3.up);
         Rotate();
     }
     private void Rotate()

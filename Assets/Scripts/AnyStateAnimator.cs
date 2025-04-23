@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class AnyStateAnimator : MonoBehaviour
 {
-    private Animator animator;
+    public Animator animator;
 
-    private Dictionary<string,AnyStateAnimation> anyStateAnimations = new Dictionary<string,AnyStateAnimation>();
+    public Dictionary<string,AnyStateAnimation> anyStateAnimations = new Dictionary<string,AnyStateAnimation>();
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +21,14 @@ public class AnyStateAnimator : MonoBehaviour
        Animate();
     }
 
+    public bool GetXState(string state)
+    {
+        return animator.GetBool(state);
+    }
+
     public void TryPlayAnimation(string animationName)
     {
+        
         bool startAnimation = true;
         if (anyStateAnimations[animationName].HigherPrio == null)
         {
@@ -45,10 +51,17 @@ public class AnyStateAnimator : MonoBehaviour
         }
         void StartAnimation()
         {
-            foreach(string animName in anyStateAnimations.Keys.ToList())
-            {
-                anyStateAnimations[animName].IsPlaying = false;
-            }
+              foreach (string animName in anyStateAnimations.Keys.ToList())
+                {
+                    if(animName != "Fight")
+                    {
+                    anyStateAnimations[animName].IsPlaying = false;
+
+                    }
+                   
+                }
+            
+            
             anyStateAnimations[animationName].IsPlaying = true;
         }
         
@@ -68,8 +81,19 @@ public class AnyStateAnimator : MonoBehaviour
             animator.SetBool(key, anyStateAnimations[key].IsPlaying);
         }
     }
+    public void OnAllAnimationsDone()
+    {
+        foreach(string key in anyStateAnimations.Keys)
+        {
+            
+            animator.SetBool(key, false);
+            
+            OnAnimationDone(key);
+        }
+    }
     public void OnAnimationDone(string animationName)
     {
+        
         anyStateAnimations[animationName].IsPlaying = false;
     }
 }
