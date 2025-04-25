@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     private Animator animator;
     [SerializeField]
@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
     
     private PlayerActions actions;
 
-    [SerializeField]
-    private AnyStateAnimator anyStateAnimator;
+ 
+    public AnyStateAnimator anyStateAnimator;
     [SerializeField]
     private CharacterController characterController;
     [SerializeField]
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
     {
         if (characterController.isGrounded)
         {
-            print("here");
+           
             anyStateAnimator.TryPlayAnimation("Jump");
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3f * gravityValue);
 
@@ -121,15 +121,18 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.tag == "Enemy") { 
-            Die();
+        print("hello");
+        if (collision.gameObject.tag == "Enemy")
+        {
             
-            collision.gameObject.SetActive(false);
+            Die();
+
         }
-        
+
     }
     public void Die()
     {
+        print("heres");
         isRunning = false;
         horizontalMouseInput = 0;
         moveInput.y = 0;

@@ -6,9 +6,9 @@ using UnityEngine.InputSystem.Processors;
 public class AnimationToRagdoll : MonoBehaviour
 {
 
-    [SerializeField] Player player;
+    [SerializeField] PlayerController player;
     [SerializeField] Collider myCollider;
-    [SerializeField] AnyStateAnimator myStateAnimator;
+    
   
     [SerializeField] float respawnTime = 30F;
     Rigidbody[] rigidbodies;
@@ -33,13 +33,9 @@ public class AnimationToRagdoll : MonoBehaviour
             rb.isKinematic = bisAnimating;
         }
         
-        myStateAnimator.animator.enabled = bisAnimating;
+        player.anyStateAnimator.animator.enabled = bisAnimating;
         
-        if (bisAnimating)
-        {
-            
-            myStateAnimator.TryPlayAnimation("Stand");
-        }
+        
     }
 
 
@@ -47,7 +43,7 @@ public class AnimationToRagdoll : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnTime);
         ToggleRagdoll(true);
-        myStateAnimator.OnAllAnimationsDone();
+        player.anyStateAnimator.OnAllAnimationsDone();
         dead = false;
         player.SetDead(false);
     }
