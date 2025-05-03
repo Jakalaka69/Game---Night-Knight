@@ -14,6 +14,7 @@ public class EnemyScript : MonoBehaviour
     public bool dead = false;
     public delegate void EnemyKilled();
     public static event EnemyKilled OnEnemyKilled;
+    public GameObject deathEffect;
 
     // Start is called before the first frame update
 
@@ -23,6 +24,8 @@ public class EnemyScript : MonoBehaviour
     }
     public void Die()
     {
+
+        Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
         gameObject.SetActive(false);
 
         if (OnEnemyKilled != null)
