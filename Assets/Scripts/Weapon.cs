@@ -5,17 +5,18 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-
+    [SerializeField] float Damage;
     private void OnTriggerEnter(Collider other)
     { 
-        print(other.gameObject.tag);
+        
         if(other.gameObject.tag == "Enemy")
         {
-            
-            other.gameObject.GetComponent<EnemyScript>().Die();
+
+            other.gameObject.GetComponent<ShirtScript>().takeDamage(Damage);
         }
-        
-            
+       
+
+
     }
     
 // Start is called before the first frame update

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - PlayerEyes
   - Enemy
+  - Owner
+  - Water
+  - OwnerHead
   layers:
   - Default
   - TransparentFX

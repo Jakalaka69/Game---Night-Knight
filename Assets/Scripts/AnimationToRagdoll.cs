@@ -46,6 +46,7 @@ public class AnimationToRagdoll : MonoBehaviour
         player.anyStateAnimator.OnAllAnimationsDone();
         dead = false;
         player.SetDead(false);
+        player.health = player.maxHealth;
     }
 
     void die()

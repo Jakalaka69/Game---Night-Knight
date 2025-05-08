@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,9 @@ public class PlayerController : MonoBehaviour
     
     private PlayerActions actions;
 
+    public float health;
+    public float maxHealth;
+    [SerializeField] HealthBar healthBar;
  
     public AnyStateAnimator anyStateAnimator;
     [SerializeField]
@@ -119,17 +123,19 @@ public class PlayerController : MonoBehaviour
         dead = x;
     }
 
-    private void OnTriggerEnter(Collider collision)
+    
+
+    public void takeDamage(float amount)
     {
-        print("hello");
-        if (collision.gameObject.tag == "Enemy")
+        health -= amount;
+        healthBar.UpdateHealthBar(health, maxHealth);
+        if (health <= 0)
         {
-            
             Die();
-
         }
-
+        
     }
+
     public void Die()
     {
         print("heres");
@@ -166,6 +172,8 @@ public class PlayerController : MonoBehaviour
         moveSpeed = walkSpeed;
         actions.Controls.Jump.performed += cxt => Jump();
         actions.Controls.Fight.performed += cxt => Fight();
+
+
     }
 
     void Start()
@@ -182,6 +190,8 @@ public class PlayerController : MonoBehaviour
         AnyStateAnimation("Fight");
 
         anyStateAnimator.AddAnimation(stand, walk, run, jump,fight );
+
+        healthBar = GetComponentInChildren<HealthBar>();
     }
     void Update()
     {
