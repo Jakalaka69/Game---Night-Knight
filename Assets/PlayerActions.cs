@@ -71,6 +71,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseMovementY"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""14cfb367-9cb9-40ee-bce9-38d102a5d9fc"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -172,6 +181,17 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f0aca23-f45d-469b-9637-93df67e9c988"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMovementY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_Controls_MouseMovement = m_Controls.FindAction("MouseMovement", throwIfNotFound: true);
         m_Controls_Jump = m_Controls.FindAction("Jump", throwIfNotFound: true);
         m_Controls_Run = m_Controls.FindAction("Run", throwIfNotFound: true);
+        m_Controls_MouseMovementY = m_Controls.FindAction("MouseMovementY", throwIfNotFound: true);
     }
 
     ~@PlayerActions()
@@ -256,6 +277,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Controls_MouseMovement;
     private readonly InputAction m_Controls_Jump;
     private readonly InputAction m_Controls_Run;
+    private readonly InputAction m_Controls_MouseMovementY;
     public struct ControlsActions
     {
         private @PlayerActions m_Wrapper;
@@ -265,6 +287,7 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         public InputAction @MouseMovement => m_Wrapper.m_Controls_MouseMovement;
         public InputAction @Jump => m_Wrapper.m_Controls_Jump;
         public InputAction @Run => m_Wrapper.m_Controls_Run;
+        public InputAction @MouseMovementY => m_Wrapper.m_Controls_MouseMovementY;
         public InputActionMap Get() { return m_Wrapper.m_Controls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -289,6 +312,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Run.started += instance.OnRun;
             @Run.performed += instance.OnRun;
             @Run.canceled += instance.OnRun;
+            @MouseMovementY.started += instance.OnMouseMovementY;
+            @MouseMovementY.performed += instance.OnMouseMovementY;
+            @MouseMovementY.canceled += instance.OnMouseMovementY;
         }
 
         private void UnregisterCallbacks(IControlsActions instance)
@@ -308,6 +334,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Run.started -= instance.OnRun;
             @Run.performed -= instance.OnRun;
             @Run.canceled -= instance.OnRun;
+            @MouseMovementY.started -= instance.OnMouseMovementY;
+            @MouseMovementY.performed -= instance.OnMouseMovementY;
+            @MouseMovementY.canceled -= instance.OnMouseMovementY;
         }
 
         public void RemoveCallbacks(IControlsActions instance)
@@ -332,5 +361,6 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         void OnMouseMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnMouseMovementY(InputAction.CallbackContext context);
     }
 }
