@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8757027369728277757}
   - component: {fileID: -5083143224357672145}
   m_Layer: 0
-  m_Name: EnemyWithHealth2 1
+  m_Name: Regular Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48,14 +48,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ec8ef306a426b42ad2cf1fe77632b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
-  maxHealth: 10
+  health: 5
+  maxHealth: 5
   healthBar: {fileID: 0}
-  speed: 0.003
+  speed: 0.006
   turnRate: 0.2
   dead: 0
+  damageClip: {fileID: 8300000, guid: adc5125fb7e8d624a87cdd256e1d006b, type: 3}
   deathEffect: {fileID: 1345135557250996954, guid: 1200f73f946c86148b880cb70f038470, type: 3}
-  contactDamage: 0
+  contactDamage: 3
 --- !u!65 &8757027369728277757
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -86,11 +87,11 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2507183725942817456}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
+  m_Avatar: {fileID: 9000000, guid: 5f548760122415946a2db42c7de5618c, type: 3}
   m_Controller: {fileID: 9100000, guid: 48e812a38091b114c959f2151ebb07a9, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

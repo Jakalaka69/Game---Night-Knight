@@ -52,7 +52,7 @@ public class AnimationToRagdoll : MonoBehaviour
     void die()
     {
         ToggleRagdoll(false);
-        StartCoroutine(GetBackUp());
+        //StartCoroutine(GetBackUp());
         
     }
 

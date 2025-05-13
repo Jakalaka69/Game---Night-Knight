@@ -2,20 +2,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     private Animator animator;
     [SerializeField]
     private AnimationToRagdoll rag;
-    
+    public int Balance;
+    [SerializeField] private TextMeshProUGUI balanceDisplay;
     private PlayerActions actions;
-
+    public GameManagerScript GM;
     public float health;
     public float maxHealth;
     [SerializeField] HealthBar healthBar;
+    [SerializeField] AudioClip damageClip;
  
     public AnyStateAnimator anyStateAnimator;
     [SerializeField]
@@ -24,6 +28,7 @@ public class PlayerController : MonoBehaviour
     #region INPUT
     private Vector3 moveInput;
     private float horizontalMouseInput;
+    private float verticalMouseInput;
     #endregion
     [SerializeField]
     #region VALUE
@@ -47,6 +52,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private bool Grounded = true;
     private bool RS = false;
+    public bool isAttacking = false;
     private void Gravity()
     {
         playerVelocity.y += gravityValue * Time.deltaTime;
@@ -59,8 +65,9 @@ public class PlayerController : MonoBehaviour
     private void Rotate()
     {
         
-         float mouseX = horizontalMouseInput * rotationSpeed * Time.deltaTime;
-         transform.Rotate(Vector3.up * mouseX);
+        float mouseX = horizontalMouseInput * rotationSpeed * Time.deltaTime;
+        
+       transform.Rotate(Vector3.up * mouseX);
         
     }
 
@@ -92,6 +99,7 @@ public class PlayerController : MonoBehaviour
     private void Fight()
     {
         anyStateAnimator.TryPlayAnimation("Fight");
+        isAttacking = true;
     }
 
     private void Run()
@@ -129,10 +137,14 @@ public class PlayerController : MonoBehaviour
     {
         health -= amount;
         healthBar.UpdateHealthBar(health, maxHealth);
-        if (health <= 0)
+        SoundEffectManager.Instance.PlaySoundFXClip(damageClip, transform, 1f);
+        if (health <= 0 && !dead)
         {
+            dead = false;
             Die();
+            GM.gameOver();
         }
+       
         
     }
 
@@ -168,6 +180,7 @@ public class PlayerController : MonoBehaviour
         
         actions.Controls.Move.performed += cxt => moveInput = cxt.ReadValue<Vector2>();
         actions.Controls.MouseMovement.performed += cxt => horizontalMouseInput = cxt.ReadValue<float>();
+        actions.Controls.MouseMovementY.performed += cxt => verticalMouseInput = cxt.ReadValue<float>();
         actions.Controls.Run.performed += cxt => Run();
         moveSpeed = walkSpeed;
         actions.Controls.Jump.performed += cxt => Jump();
@@ -191,22 +204,23 @@ public class PlayerController : MonoBehaviour
 
         anyStateAnimator.AddAnimation(stand, walk, run, jump,fight );
 
-        healthBar = GetComponentInChildren<HealthBar>();
+        
     }
     void Update()
     {
+
+        balanceDisplay.text = Balance.ToString();
+
         if (!dead)
         {
             actions.Enable();
             characterController.enabled = true;
-            
             Move();
             Rotate();
             Gravity();
         }
         else
         {
-
             Die();
         }
 

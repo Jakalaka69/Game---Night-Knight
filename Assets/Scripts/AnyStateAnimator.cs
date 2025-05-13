@@ -93,6 +93,10 @@ public class AnyStateAnimator : MonoBehaviour
     }
     public void OnAnimationDone(string animationName)
     {
+        if(animationName == "Fight")
+        {
+            GetComponent<PlayerController>().isAttacking = false;
+        }
         
         anyStateAnimations[animationName].IsPlaying = false;
     }

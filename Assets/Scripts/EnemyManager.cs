@@ -5,16 +5,27 @@ using UnityEngine;
 public class EnemyManager : MonoBehaviour
 {
     
-    public Transform spawnPoint;
-    public GameObject enemyPrefab;
+    public Transform[] spawnPoints;
+    public GameObject[] enemyPrefabs;
+    
+    public int maxSpawnRate;
+    private float timeSinceLast;
+    private float lastTime;
+    private float nextTime;
     // Start is called before the first frame update
 
-
+    void Awake()
+    {
+        nextTime = Random.Range(3,maxSpawnRate);
+    }
     private void Update()
     {
-        float random = Random.Range(0, 500);
-        if(random == 2)
+
+        timeSinceLast = Time.time - lastTime;
+        if((timeSinceLast > nextTime) && Time.timeScale != 0f)
         {
+            lastTime = Time.time;
+            nextTime = Random.Range(3, maxSpawnRate);
             spawnNewEnemy();
         }
     }
@@ -22,8 +33,9 @@ public class EnemyManager : MonoBehaviour
 
     void spawnNewEnemy()
     {
-
-        Instantiate(enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
+        int rand = Random.Range(0,spawnPoints.Length);
+        int rand2 = Random.Range(0,enemyPrefabs.Length);
+        Instantiate(enemyPrefabs[rand2], spawnPoints[rand].transform.position, Quaternion.identity);
         
     }
 

@@ -31,10 +31,8 @@ public class WaterScript : MonoBehaviour
     public void Die()
     {
         gameObject.SetActive(false);
-        if (OnEnemyKilled != null)
-        {
-            OnEnemyKilled();
-        }
+        new WaitForSeconds(1);
+        Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider collision)
     {

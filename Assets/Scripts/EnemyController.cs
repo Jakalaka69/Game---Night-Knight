@@ -17,6 +17,7 @@ public class ShirtScript : MonoBehaviour
     public bool dead = false;
     public delegate void EnemyKilled();
     public static event EnemyKilled OnEnemyKilled;
+    [SerializeField] AudioClip damageClip;
     public GameObject deathEffect;
     public float contactDamage;
 
@@ -35,16 +36,22 @@ public class ShirtScript : MonoBehaviour
     {
         health -= amount;
         healthBar.UpdateHealthBar(health, maxHealth);
-        if(health <= 0) {
-            Die();
+        
+        if (health <= 0) {
+            StartCoroutine(Die());
         }
     }
 
-    public void Die()
+    public IEnumerator Die()
     {
+        SoundEffectManager.Instance.PlaySoundFXClip(damageClip, transform, 1f);
+        GameObject effect = Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
+        yield return new WaitForSeconds(1);
+        Destroy(effect);
+       
+       
 
-        Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
-        gameObject.SetActive(false);
 
         
     }
@@ -53,15 +60,11 @@ public class ShirtScript : MonoBehaviour
         print(collision.gameObject.tag);
         if (collision.gameObject.tag == "OwnerHead")
         {
-            
-            Die();
+            collision.gameObject.GetComponent<OwnerController>().hit(contactDamage);
+            StartCoroutine(Die());
 
         }
-        if(collision.gameObject.tag == "Player")
-        {
-            collision.gameObject.GetComponent<PlayerController>().takeDamage(contactDamage);
-            Die();
-        }
+        
         
 
     }
@@ -69,9 +72,12 @@ public class ShirtScript : MonoBehaviour
     void LateUpdate()
     {
         
-
-        gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Owner.transform.position, speed);
-        gameObject.transform.LookAt(Owner.transform.position);
+        if(Time.timeScale != 0f)
+        {
+            gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, Owner.transform.position, speed);
+            gameObject.transform.LookAt(Owner.transform.position);
+        }
+        
     }
 
     
