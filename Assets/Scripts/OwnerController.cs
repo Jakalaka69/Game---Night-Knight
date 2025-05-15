@@ -9,6 +9,7 @@ public class OwnerController : MonoBehaviour
     public static float disturbed = 0;
     public HealthBar healthBar;
     public GameManagerScript GM;
+    
     // Start is called before the first frame update
     public void hit(float damage)
     {
@@ -16,7 +17,7 @@ public class OwnerController : MonoBehaviour
         healthBar.UpdateHealthBar(disturbed, maxDisturbed);
         if(disturbed >= maxDisturbed)
         {
-            GM.gameOver();
+            GameManagerScript.gameOver();
         }
     }
     private void Start()

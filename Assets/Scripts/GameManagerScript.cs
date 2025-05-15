@@ -50,13 +50,13 @@ public class GameManagerScript : MonoBehaviour
             tip++;
         }
     }
-    public void gameOver()
+    public static void gameOver()
     {
-        Destroy(BGMusic);
+        Destroy(GameObject.FindGameObjectWithTag("BGMusic"));
         Time.timeScale = 0f;
         
-        SoundEffectManager.Instance.PlaySoundFXClip(gameOverSound, player.transform, 1f);
-        gameOverUI.SetActive(true);
+        
+        GameObject.FindGameObjectWithTag("gameOverUI").SetActive(true);
     }
     public void Restart()
     {

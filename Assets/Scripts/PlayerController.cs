@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XR;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.HighDefinition.CameraSettings;
 
@@ -150,12 +151,24 @@ public class PlayerController : MonoBehaviour
     {
         health -= amount;
         healthBar.UpdateHealthBar(health, maxHealth);
-        SoundEffectManager.Instance.PlaySoundFXClip(damageClip, transform, 1f);
+        if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            SoundEffectManager.Instance.PlaySoundFXClip(damageClip, transform, 1f);
+        }
+        
         if (health <= 0 && !dead)
         {
             dead = false;
             Die();
-            GameManagerLevel2.gameOver();
+            if(SceneManager.GetActiveScene().buildIndex == 3)
+            {
+                GameManagerLevel2.gameOver();
+            }
+            else if (SceneManager.GetActiveScene().buildIndex == 1)
+            {
+                GameManagerScript.gameOver();
+            }
+
         }
        
         
@@ -187,7 +200,7 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        print("heres");
+      
         isRunning = false;
         horizontalMouseInput = 0;
         moveInput.y = 0;
