@@ -6731,7 +6731,7 @@ MonoBehaviour:
   gameOverUI: {fileID: 376650624}
   gameOverSound: {fileID: 8300000, guid: fbbba4b75c0b68445bd9c2dc7179dcad, type: 3}
   timeLeftText: {fileID: 1356173254}
-  maxTime: 20
+  maxTime: 240
   tips:
   - {fileID: 801316365}
   - {fileID: 1809077409}
