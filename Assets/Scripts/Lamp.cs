@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DoorScript;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
@@ -18,6 +19,7 @@ public class Lamp : MonoBehaviour
     public int maxSpawnRate;
     public float lastTime;
     private float nextTime;
+    [SerializeField] private Door door;
 
     public void LampOn()
     {
@@ -50,7 +52,11 @@ public class Lamp : MonoBehaviour
         
 
         timeSinceLast = Time.time - lastTime;
-        if ((timeSinceLast > nextTime) && Time.timeScale != 0f && !disturb)
+        if(door.open == true)
+        {
+            LampOff();
+        }
+        else if ((timeSinceLast > nextTime) && Time.timeScale != 0f && !disturb)
         {
             lastTime = Time.time;
             nextTime = Random.Range(6, maxSpawnRate);
@@ -62,7 +68,7 @@ public class Lamp : MonoBehaviour
         else if (disturb)
         {
             
-            if(Time.time - count > 1 && Time.time - grace > 3)
+            if(Time.time - count > 1 && Time.time - grace > 4)
             {
                 Disturb();
                 count = Time.time;

@@ -10,6 +10,14 @@ TagManager:
   - Water
   - OwnerHead
   - Lamp
+  - Bottle
+  - Manager
+  - GameOverUI
+  - BGMusic
+  - Grade
+  - GameManager
+  - ReportCard
+  - Lava
   layers:
   - Default
   - TransparentFX

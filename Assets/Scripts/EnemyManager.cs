@@ -12,6 +12,7 @@ public class EnemyManager : MonoBehaviour
     private float timeSinceLast;
     private float lastTime;
     private float nextTime;
+    [SerializeField] private GameManagerScript gameManagerScript;
     // Start is called before the first frame update
 
     void Awake()
@@ -20,14 +21,17 @@ public class EnemyManager : MonoBehaviour
     }
     private void Update()
     {
-
-        timeSinceLast = Time.time - lastTime;
-        if((timeSinceLast > nextTime) && Time.timeScale != 0f)
+        if(gameManagerScript.spawners == true)
         {
-            lastTime = Time.time;
-            nextTime = Random.Range(3, maxSpawnRate);
-            spawnNewEnemy();
+            timeSinceLast = Time.time - lastTime;
+            if ((timeSinceLast > nextTime) && Time.timeScale != 0f)
+            {
+                lastTime = Time.time;
+                nextTime = Random.Range(3, maxSpawnRate);
+                spawnNewEnemy();
+            }
         }
+        
     }
 
 

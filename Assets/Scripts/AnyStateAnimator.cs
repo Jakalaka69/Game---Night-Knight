@@ -32,6 +32,7 @@ public class AnyStateAnimator : MonoBehaviour
         bool startAnimation = true;
         if (anyStateAnimations[animationName].HigherPrio == null)
         {
+            print("yes");
             StartAnimation();
         }
         else

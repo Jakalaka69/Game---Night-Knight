@@ -30,8 +30,7 @@ public class WaterScript : MonoBehaviour
     }
     public void Die()
     {
-        gameObject.SetActive(false);
-        new WaitForSeconds(1);
+        
         Destroy(gameObject);
     }
     private void OnTriggerEnter(Collider collision)

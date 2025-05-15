@@ -5,19 +5,25 @@ using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.XR;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.HighDefinition.CameraSettings;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Transform cuddleSpot;
+    [SerializeField] private GameObject toolTip;
+    [SerializeField] private GameObject door;
+    public bool cuddling;
     private Animator animator;
     [SerializeField]
     private AnimationToRagdoll rag;
-    public int Balance;
-    [SerializeField] private TextMeshProUGUI balanceDisplay;
-    private PlayerActions actions;
-    public GameManagerScript GM;
+    public static float Balance;
+    [SerializeField] private Text balanceDisplay;
+    public PlayerActions actions;
+    
     public float health;
-    public float maxHealth;
+    public static float maxHealth;
     [SerializeField] HealthBar healthBar;
     [SerializeField] AudioClip damageClip;
  
@@ -41,11 +47,11 @@ public class PlayerController : MonoBehaviour
     private float jumpHeight = 0.2F;
     private bool isRunning = false;
 
-    [SerializeField]
-    private float runSpeed = 0.5F;
+    
+    public static float runSpeed;
 
-    [SerializeField]
-    private float walkSpeed = 0.25F;
+    
+    public static float walkSpeed;
 
     private bool dead = false;
 
@@ -95,7 +101,14 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Lava"))
+        {
+            takeDamage(0.05f);
+        }
+        
+    }
     private void Fight()
     {
         anyStateAnimator.TryPlayAnimation("Fight");
@@ -142,10 +155,34 @@ public class PlayerController : MonoBehaviour
         {
             dead = false;
             Die();
-            GM.gameOver();
+            GameManagerLevel2.gameOver();
         }
        
         
+    }
+
+    private void Cuddle()
+    {
+        isRunning = false;
+        horizontalMouseInput = 0;
+        moveInput.y = 0;
+        moveInput.z = 0;
+        moveInput.x = 0;
+        cuddling = true;
+        anyStateAnimator.TryPlayAnimation("Cuddle");
+        actions.Disable();
+        characterController.enabled = false;
+
+        transform.rotation = Quaternion.Euler(0,0,0);
+        transform.position += new Vector3(0, -0.3f, 0);
+    }
+    private void StopCuddle()
+    {
+        cuddling = false;
+        anyStateAnimator.OnAnimationDone("Cuddle");
+        actions.Enable();
+        characterController.enabled = true;
+        transform.position += new Vector3(0, 0.3f, 0);
     }
 
     public void Die()
@@ -176,7 +213,10 @@ public class PlayerController : MonoBehaviour
     {
         actions = new PlayerActions();
 
-
+        Balance = 0;
+        maxHealth = 10;
+        runSpeed = 3F;
+        walkSpeed = 1F;
         
         actions.Controls.Move.performed += cxt => moveInput = cxt.ReadValue<Vector2>();
         actions.Controls.MouseMovement.performed += cxt => horizontalMouseInput = cxt.ReadValue<float>();
@@ -191,27 +231,30 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        cuddling = false;
         AnyStateAnimation stand = new
-        AnyStateAnimation("Stand", "Jump");
+        AnyStateAnimation("Stand", "Jump", "Cuddle");
         AnyStateAnimation walk = new
-        AnyStateAnimation("Walk", "Jump");
+        AnyStateAnimation("Walk", "Jump","Cuddle");
         AnyStateAnimation run = new
-        AnyStateAnimation("Run", "Jump");
+        AnyStateAnimation("Run", "Jump","Cuddle");
         AnyStateAnimation jump = new
-        AnyStateAnimation("Jump");
+        AnyStateAnimation("Jump","Cuddle");
+        AnyStateAnimation cuddle = new
+        AnyStateAnimation("Cuddle");
         AnyStateAnimation fight = new
         AnyStateAnimation("Fight");
 
-        anyStateAnimator.AddAnimation(stand, walk, run, jump,fight );
+        anyStateAnimator.AddAnimation(stand, walk, run, jump, cuddle,fight );
 
         
     }
     void Update()
     {
-
+        
         balanceDisplay.text = Balance.ToString();
 
-        if (!dead)
+        if (!dead && !cuddling)
         {
             actions.Enable();
             characterController.enabled = true;
@@ -219,7 +262,7 @@ public class PlayerController : MonoBehaviour
             Rotate();
             Gravity();
         }
-        else
+        else if( dead && !cuddling)
         {
             Die();
         }
@@ -229,6 +272,33 @@ public class PlayerController : MonoBehaviour
         if (Grounded)
         {
             anyStateAnimator.OnAnimationDone("Jump");
+        }
+
+
+        float dist = Vector3.Distance(cuddleSpot.position, transform.position);
+        if (dist < 2)
+        {
+            toolTip.SetActive(true);
+            if (!cuddling)
+            {
+                if (Input.GetKeyDown(KeyCode.F))
+                {
+
+                    Cuddle();
+                }
+            }
+            else
+            {
+                if (Input.anyKeyDown)
+                {
+                    StopCuddle();
+                }
+            }
+
+        }
+        else
+        {
+            toolTip.SetActive(false);
         }
     }
 }

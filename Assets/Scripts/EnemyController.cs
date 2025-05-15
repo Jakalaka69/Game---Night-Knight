@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Composites;
 using UnityEngine.UIElements;
+using static GameManagerScript;
 
 public class ShirtScript : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class ShirtScript : MonoBehaviour
     [SerializeField] AudioClip damageClip;
     public GameObject deathEffect;
     public float contactDamage;
+   
 
     // Start is called before the first frame update
 
@@ -27,6 +29,7 @@ public class ShirtScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         Owner = GameObject.FindGameObjectWithTag("Owner");
+        
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.UpdateHealthBar(health, maxHealth);
 
@@ -38,22 +41,25 @@ public class ShirtScript : MonoBehaviour
         healthBar.UpdateHealthBar(health, maxHealth);
         
         if (health <= 0) {
-            StartCoroutine(Die());
+            Die();
         }
     }
 
-    public IEnumerator Die()
+    public void Die()
     {
         SoundEffectManager.Instance.PlaySoundFXClip(damageClip, transform, 1f);
-        GameObject effect = Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
+        Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
-        yield return new WaitForSeconds(1);
-        Destroy(effect);
-       
-       
 
+    }
 
+    public void SilentDie()
+    {
+
+        Instantiate(deathEffect, gameObject.transform.position, Quaternion.identity);
+        Destroy(gameObject);
         
+
     }
     private void OnTriggerEnter(Collider collision)
     {
@@ -61,7 +67,7 @@ public class ShirtScript : MonoBehaviour
         if (collision.gameObject.tag == "OwnerHead")
         {
             collision.gameObject.GetComponent<OwnerController>().hit(contactDamage);
-            StartCoroutine(Die());
+            Die();
 
         }
         

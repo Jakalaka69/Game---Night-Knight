@@ -51,7 +51,7 @@ MonoBehaviour:
   health: 5
   maxHealth: 5
   healthBar: {fileID: 0}
-  speed: 0.01
+  speed: 0.008
   turnRate: 0.2
   dead: 0
   damageClip: {fileID: 8300000, guid: adc5125fb7e8d624a87cdd256e1d006b, type: 3}
